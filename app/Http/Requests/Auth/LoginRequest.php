@@ -27,28 +27,39 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'login' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }
 
-    /**
-     * Attempt to authenticate the request's credentials.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+        // Tentative d'authentification avec l'adresse e-mail
+        $credentials = [
+            'email' => $this->login,
+            'password' => $this->password,
+        ];
 
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
+        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
+            // Si l'authentification avec l'adresse e-mail échoue, on essaie avec le nom d'utilisateur
+            $credentials = [
+                'username_id' => $this->login,
+                'password' => $this->password,
+            ];
+
+            if (! Auth::attempt($credentials, $this->boolean('remember'))) {
+                // Si les deux tentatives échouent, on enregistre un hit dans le rate limiter
+                RateLimiter::hit($this->throttleKey());
+
+                throw ValidationException::withMessages([
+                    'login' => trans('auth.failed'),
+                ]);
+            }
         }
 
+        // Si l'authentification réussit, on efface le rate limiter
         RateLimiter::clear($this->throttleKey());
     }
 
