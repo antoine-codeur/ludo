@@ -8,8 +8,9 @@
     <div class="container mx-auto px-4 py-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             @foreach ($categories as $category)
-                <a href="{{ route('show.categorie', ['category' => $category->id]) }}" class="category-card bg-cover bg-center relative overflow-hidden shadow-lg rounded-lg cursor-pointer" style="background-image: url('{{ $category->image_url }}'); height: 250px;">
-                    <div class="bg-black bg-opacity-50 absolute inset-0 p-4 flex flex-col justify-end transition duration-500 ease-in-out transform hover:scale-105">
+            
+            <a href="{{ route('categories.show', ['category' => $category->id]) }}" class="category-card bg-cover bg-center relative overflow-hidden shadow-lg rounded-lg cursor-pointer" style="background-image: url('{{ $category->image_url }}'); height: 250px;">
+                <div class="bg-black bg-opacity-50 absolute inset-0 p-4 flex flex-col justify-end transition duration-500 ease-in-out transform hover:scale-105">
                         <div class="text-white">
                             <h3 class="text-xl font-bold">{{ $category->name }}</h3>
                             <p>{{ $category->posts->count() }} posts</p>
