@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
 
 
 // Categories
+Route::get('autocomplete-categories', [CategoryController::class, 'autocompleteCategories'])->name('autocomplete.categories');
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 Route::middleware('auth')->group(function () {

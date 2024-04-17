@@ -54,7 +54,12 @@ class CategoryController extends Controller
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
-
+    public function autocompleteCategories(Request $request)
+    {
+        $term = $request->input('term');
+        $categories = Category::where('name', 'LIKE', '%' . $term . '%')->pluck('name');
+        return response()->json($categories);
+    }
     public function destroy(Category $category)
     {
         $category->delete();
