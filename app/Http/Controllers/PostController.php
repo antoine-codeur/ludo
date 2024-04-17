@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -25,13 +27,41 @@ class PostController extends Controller
             'title' => 'required',
             'content' => 'required',
             'description' => 'nullable',
-            'image_url' => 'nullable|url',
         ]);
 
-        Post::create($request->all());
+        // Analyser la description pour les hashtags
+        $description = '';
+        $categories = collect();
+
+        // Vérifier si une description est fournie
+        if ($request->has('description')) {
+            // Analyser la description pour les hashtags
+            preg_match_all('/#(\w+)/', $request->description, $matches);
+
+            // Récupérer uniquement les noms des catégories
+            $categories = collect($matches[1])->unique();
+
+            // Construire la chaîne de description
+            $description = $categories->implode(' ');
+        }
+
+        // Créer le post avec les données validées et attribuer l'ID de l'utilisateur actuel
+        $post = new Post();
+        $post->title = $request->title;
+        $post->content = $request->content;
+        $post->description = $description;
+        $post->user_id = Auth::id(); // Utilisateur actuellement connecté
+        $post->save();
+
+        // Créer les catégories manquantes
+        foreach ($categories as $categoryName) {
+            $category = Category::firstOrCreate(['name' => $categoryName], ['is_valid' => false]);
+            $post->categories()->attach($category);
+        }
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
+
 
     public function edit(Post $post)
     {
