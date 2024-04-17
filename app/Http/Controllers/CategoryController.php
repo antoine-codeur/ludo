@@ -9,9 +9,11 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        // Fetch only valid categories
+        $categories = Category::where('is_valid', true)->with('posts')->get();
         return view('categories.index', compact('categories'));
     }
+
 
     public function create()
     {
@@ -30,7 +32,12 @@ class CategoryController extends Controller
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
+    public function show(Category $category)
+    {
+        $posts = $category->posts()->paginate(10);
 
+        return view('categories.show', compact('category', 'posts'));
+    }
     public function edit(Category $category)
     {
         return view('categories.edit', compact('category'));

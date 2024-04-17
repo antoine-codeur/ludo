@@ -9,13 +9,12 @@ class CategoryPostSeeder extends Seeder
 {
     public function run()
     {
-        // Retrieve all posts and categories
         $posts = Post::all();
         $categories = Category::all();
 
-        // Attach categories to each post randomly
         $posts->each(function ($post) use ($categories) {
-            $post->categories()->attach(
+            // Utilisation de syncWithoutDetaching pour éviter les doublons
+            $post->categories()->syncWithoutDetaching(
                 $categories->random(rand(1, 5))->pluck('id')->toArray()
             );
         });
