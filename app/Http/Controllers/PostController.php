@@ -85,11 +85,20 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
-
-    public function destroy(Post $post)
+    public function destroy(Request $request, Post $post)
     {
-        $post->delete();
+        // Obtenir l'utilisateur actuellement authentifié
+        $user = $request->user();
 
-        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+        // Vérifier si l'utilisateur est l'auteur du post ou s'il est administrateur
+        if ($post->user_id === $user->id || $user->isAdmin()) {
+            // Supprimer le post
+            $post->delete();
+            // Rediriger avec un message de succès
+            return redirect()->route('posts.index')->with('success', 'Le post a été supprimé avec succès.');
+        } else {
+            // Si l'utilisateur n'est pas autorisé, rediriger avec un message d'erreur
+            return redirect()->route('posts.index')->with('error', 'Vous n\'êtes pas autorisé à supprimer ce post.');
+        }
     }
 }

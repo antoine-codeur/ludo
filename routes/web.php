@@ -19,6 +19,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+// Admin CRUD routes (if needed)
+Route::middleware('admin')->group(function () {
+    Route::resource('posts', PostController::class)->only(['edit', 'update', 'destroy']);
+    Route::resource('categories', CategoryController::class)->only(['edit', 'update', 'destroy']);
+});
 
 
 // Categories

@@ -13,12 +13,14 @@
                 <!-- Dropdown Menu -->
                 <div x-show="open" @click.away="open = false" class="z-50 mt-2 py-1 w-48 bg-white rounded-md shadow-xl border border-gray-100">
                     <a href="{{ route('posts.show', $post) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Post</a>
-                    <a href="{{ route('posts.edit', $post) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="event.preventDefault(); document.getElementById('delete-post-form-{{ $post->id }}').submit();">Delete</a>
-                    <form id="delete-post-form-{{ $post->id }}" action="{{ route('posts.destroy', $post) }}" method="POST" style="display: none;">
-                        @csrf
-                        @method('DELETE')
-                    </form>
+                    @if (Auth::check() && (Auth::user()->isAdmin() || $post->user_id === Auth::id()))
+                        <a href="{{ route('posts.edit', $post) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="event.preventDefault(); document.getElementById('delete-post-form-{{ $post->id }}').submit();">Delete</a>
+                        <form id="delete-post-form-{{ $post->id }}" action="{{ route('posts.destroy', $post) }}" method="POST" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                    @endif
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Share</a>
                 </div>
             </div>
@@ -36,12 +38,15 @@
                 <!-- Dropdown Menu -->
                 <div x-show="open" @click.away="open = false" class="absolute z-50 mt-2 py-1 w-48 bg-white rounded-md shadow-xl border border-gray-100">
                     <a href="{{ route('posts.show', $post) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Post</a>
-                    <a href="{{ route('posts.edit', $post) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="event.preventDefault(); document.getElementById('delete-post-form-{{ $post->id }}').submit();">Delete</a>
-                    <form id="delete-post-form-{{ $post->id }}" action="{{ route('posts.destroy', $post) }}" method="POST" style="display: none;">
-                        @csrf
-                        @method('DELETE')
-                    </form>
+                    @if (Auth::check() && (Auth::user()->isAdmin() || $post->user_id === Auth::id()))
+                        <a href="{{ route('posts.edit', $post) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="event.preventDefault(); document.getElementById('delete-post-form-{{ $post->id }}').submit();">Delete</a>
+                        <form id="delete-post-form-{{ $post->id }}" action="{{ route('posts.destroy', $post) }}" method="POST" style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                    @endif
+
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Share</a>
                 </div>
             </div>
