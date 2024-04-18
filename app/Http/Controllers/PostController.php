@@ -11,8 +11,9 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::latest()->paginate(10);
-        return view('posts.index', compact('posts'));
+        // Récupérer tous les posts et les trier par date de création
+        $posts = Post::latest()->paginate(12);
+        return view('posts.index', compact('posts')); // Assurez-vous que le nom de la vue est correct
     }
 
 
@@ -61,8 +62,11 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
-
-
+    public function myPosts()
+    {
+        $myPosts = Post::where('user_id', Auth::id())->latest()->get();
+        return view('posts.my_posts', compact('myPosts')); // Notez le 'posts.' devant 'my_posts'
+    }
     public function edit(Post $post)
     {
         return view('posts.edit', compact('post'));

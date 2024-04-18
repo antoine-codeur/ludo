@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
-class DashboardController extends Controller
+class HomeController extends Controller
 {
     /**
      * Display the user's dashboard.

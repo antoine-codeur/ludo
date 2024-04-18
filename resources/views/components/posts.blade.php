@@ -1,9 +1,9 @@
 <div class="post bg-white rounded-lg shadow-lg overflow-hidden my-4">
     <h2 class="font-bold text-xl mb-2">{{ $post->title }}</h2>
-    <div class="mt-4 mb-2 text-gray-600">{{ $post->content }}</div>
     @if ($post->image_url)
         <img src="{{ $post->image_url }}" alt="Image">
     @endif        
+    <div class="mt-4 mb-2 text-gray-600">{{ $post->content }}</div>
     <div class="p-4">
         <p class="text-gray-700 text-base">
             @foreach ($post->categories as $category)
