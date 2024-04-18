@@ -31,10 +31,12 @@ Route::middleware('auth')->group(function () {
 });
 
 // Posts
+Route::middleware('auth')->get('/my_posts', [PostController::class, 'myPosts'])->name('my_posts');
 Route::resource('posts', PostController::class)->except(['index', 'show']);
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
-Route::middleware('auth')->get('/my_posts', [PostController::class, 'myPosts'])->name('my_posts');
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
 
 // Comments
 Route::middleware('auth')->group(function () {
