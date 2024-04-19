@@ -96,7 +96,28 @@ class PostController extends Controller
             'image_url' => 'nullable|url',
         ]);
 
-        $post->update($request->all());
+        // Analyser la description pour les hashtags
+        $description = '';
+        $categories = collect();
+
+        if ($request->has('description')) {
+            preg_match_all('/#(\w+)/', $request->description, $matches);
+            $categories = collect($matches[1])->unique();
+            $description = $categories->implode(' ');
+        }
+
+        // Mettre à jour le post
+        $post->title = $request->title;
+        $post->content = $request->content;
+        $post->description = $description;
+        $post->save();
+
+        // Mettre à jour les catégories associées
+        $post->categories()->sync([]);
+        foreach ($categories as $categoryName) {
+            $category = Category::firstOrCreate(['name' => $categoryName], ['is_valid' => false]);
+            $post->categories()->attach($category);
+        }
 
         return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }

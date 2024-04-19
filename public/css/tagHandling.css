@@ -1,0 +1,19 @@
+.category-tag {
+    display: inline-block;
+    background-color: #efefef;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    font-weight: bold;
+}
+.category-tag:hover {
+    background-color: #e0e0e0;
+}
+.category-tag .close-tag {
+    margin-left: 10px;
+    color: red;
+    cursor: pointer;
+}
+.category-tag .close-tag:hover {
+    color: darkred;
+}
