@@ -41,6 +41,7 @@ Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 
 // Comments
 Route::middleware('auth')->group(function () {
