@@ -1,7 +1,9 @@
 <div class="post bg-white rounded-lg shadow my-4 relative">
     
     @if ($post->image_url)
-        <img class="w-full h-64 object-cover rounded-t-lg" src="{{ $post->image_url }}" alt="Post image">
+        <div class="bg-gray-800 rounded-t-lg">
+            <img class="w-full h-64 object-cover rounded-t-lg" src="{{ $post->image_url }}" alt="Post image">
+        </div>
         <div class="absolute top-0 left-0 m-2">
             <div x-data="{ open: false }">
                 <button @click="open = !open" class="focus:outline-none p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">

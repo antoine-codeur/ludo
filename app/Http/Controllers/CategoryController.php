@@ -57,7 +57,9 @@ class CategoryController extends Controller
     public function autocompleteCategories(Request $request)
     {
         $term = $request->input('term');
-        $categories = Category::where('name', 'LIKE', '%' . $term . '%')->pluck('name');
+        $categories = Category::where('name', 'LIKE', '%' . $term . '%')
+                            ->where('is_valid', true)
+                            ->pluck('name');
         return response()->json($categories);
     }
     public function destroy(Category $category)
