@@ -21,6 +21,14 @@
                     <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
                         {{ __('Categories') }}
                     </x-nav-link>
+                    @if(Auth::user()->isAdmin())
+                        <x-nav-link :href="route('categories.create')" :active="request()->routeIs('categories.create')">
+                            {{ __('Create Category') }}
+                        </x-nav-link>
+                        {{-- <x-nav-link :href="route('categories.manage')" :active="request()->routeIs('categories.manage')">
+                            {{ __('Manage Categories') }}
+                        </x-nav-link> --}}
+                    @endif
                     <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
                         {{ __('Create Posts') }}
                     </x-nav-link>
@@ -88,6 +96,14 @@
             <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
                 {{ __('Categories') }}
             </x-responsive-nav-link>
+            @if(Auth::user()->isAdmin())
+                <x-responsive-nav-link :href="route('categories.create')" :active="request()->routeIs('categories.create')">
+                    {{ __('Create Category') }}
+                </x-responsive-nav-link>
+                {{-- <x-responsive-nav-link :href="route('categories.manage')" :active="request()->routeIs('categories.manage')">
+                    {{ __('Manage Categories') }}
+                </x-responsive-nav-link> --}}
+            @endif
             <x-responsive-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
                 {{ __('Create Posts') }}
             </x-responsive-nav-link>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -24,11 +25,20 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:categories',
-            'image_url' => 'nullable|url',
+            'image' => 'nullable|image|max:2048', // Adjust the max file size as needed
             'description' => 'nullable',
         ]);
 
-        Category::create($request->all());
+        // Créer une nouvelle catégorie avec is_valid=true
+        $category = new Category();
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->is_valid = true; // Ajoute cette ligne pour définir is_valid=true
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('public/uploads/imgCategories');
+            $category->image_url = Storage::url($imagePath);
+        }
+        $category->save();
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
@@ -46,14 +56,30 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:categories,name,' . $category->id,
-            'image_url' => 'nullable|url',
+            'image' => 'nullable|image|max:2048', // Adjust the max file size as needed
             'description' => 'nullable',
         ]);
 
-        $category->update($request->all());
+        // Mettre à jour les champs de la catégorie
+        $category->name = $request->name;
+        $category->description = $request->description;
+
+        // Si une nouvelle image est fournie, la sauvegarder et mettre à jour l'URL de l'image
+        if ($request->hasFile('image')) {
+            // Supprimer l'ancienne image si elle existe
+            if ($category->image_url) {
+                Storage::delete(str_replace('storage', 'public', $category->image_url));
+            }
+            $imagePath = $request->file('image')->store('public/uploads/imgCategories');
+            $category->image_url = Storage::url($imagePath);
+        }
+
+        // Sauvegarder les modifications de la catégorie
+        $category->save();
 
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
+
     public function autocompleteCategories(Request $request)
     {
         $term = $request->input('term');

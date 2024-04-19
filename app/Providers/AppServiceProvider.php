@@ -21,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // Crée les dossiers s'ils n'existent pas
         Storage::makeDirectory('public/uploads/imgPosts');
+        Storage::makeDirectory('public/uploads/imgCategories');
         Storage::makeDirectory('public/uploads/trash');
+        
     }
 }

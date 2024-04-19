@@ -22,16 +22,15 @@ Route::middleware('auth')->group(function () {
 // Admin CRUD routes (if needed)
 Route::middleware('admin')->group(function () {
     Route::resource('posts', PostController::class)->only(['edit', 'update', 'destroy']);
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::resource('categories', CategoryController::class)->only(['edit', 'update', 'destroy']);
 });
-
 
 // Categories
 Route::get('autocomplete-categories', [CategoryController::class, 'autocompleteCategories'])->name('autocomplete.categories');
 Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 Route::middleware('auth')->group(function () {
-    Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
     Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
 });
 
