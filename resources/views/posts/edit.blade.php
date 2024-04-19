@@ -19,7 +19,7 @@
                             </h2>
                         </header>
 
-                        <form method="post" action="{{ route('posts.update', $post->id) }}">
+                        <form method="post" action="{{ route('posts.update', $post->id) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT') <!-- Important pour la méthode HTTP PUT -->
 
