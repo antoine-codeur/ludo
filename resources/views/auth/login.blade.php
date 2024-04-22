@@ -8,7 +8,7 @@
         <!-- Email Address / Username -->
         <div>
             <x-input-label for="login" :value="__('Email or Username_Id')" />
-            <x-text-input id="login" class="block mt-1 w-full" type="text" name="login" :value="old('login')" required autofocus />
+            <x-text-input id="login" class="block mt-1 w-full" type="text" name="login" :value="old('login')" required autofocus autocomplete="username_id" />
             <x-input-error :messages="$errors->get('login')" class="mt-2" />
         </div>
 

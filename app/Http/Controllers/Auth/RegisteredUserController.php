@@ -18,8 +18,18 @@ class RegisteredUserController extends Controller
      * Display the registration view.
      */
     public function create(): View
+{
+    // Générez le usernameId
+    $usernameId = $this->generateUsernameId();
+
+    // Passez le usernameId à la vue du formulaire
+    return view('auth.register', ['usernameId' => $usernameId]);
+}
+
+// Méthode pour générer le usernameId
+    private function generateUsernameId(): string
     {
-        return view('auth.register');
+        return '#' . str_pad(mt_rand(0, 9999), 4, '0', STR_PAD_LEFT);
     }
 
     /**

@@ -40,4 +40,10 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+    public function findForIdentifier($identifier)
+    {
+        return $this->orWhere('username', $identifier)
+                    ->orWhere('username_id', $identifier)
+                    ->first();
+    }
 }

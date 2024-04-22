@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}" id="registration-form">
         @csrf
 
         <!-- Name -->
@@ -19,10 +19,16 @@
         <!-- Username -->
         <div class="mt-4">
             <x-input-label for="username" :value="__('Username')" />
-            <x-text-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autocomplete="username" />
+            <div class="flex">
+                <!-- Affichage visuel du nom d'utilisateur avec le suffixe -->
+                <div class="flex-1 relative">
+                    <x-text-input id="username" class="block w-full pr-12" type="text" name="username" :value="old('username')" required autocomplete="username" />
+                    <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500">{{ $usernameId }}</span>
+                </div>
+            </div>
             <x-input-error :messages="$errors->get('username')" class="mt-2" />
         </div>
-
+        
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
@@ -56,4 +62,37 @@
             </x-primary-button>
         </div>
     </form>
+    {{-- <script>
+        // Sélectionnez le formulaire
+        const form = document.getElementById('registration-form');
+
+        // Ajoutez un écouteur pour l'événement de soumission du formulaire
+        form.addEventListener('submit', function(event) {
+            // Récupérez la valeur actuelle du champ username
+            let username = document.getElementById('username').value;
+
+            // Récupérez la valeur de usernameId
+            const usernameId = document.getElementById('usernameId').value;
+
+            // Si le champ username ne contient pas déjà le suffixe, ajoutez-le
+            if (!username.endsWith(usernameId)) {
+                // Ajoutez le suffixe à la valeur du champ username
+                username += usernameId;
+
+                // Mettez à jour la valeur du champ username
+                document.getElementById('username').value = username;
+            }
+        });
+
+        // Ajoutez un écouteur pour l'événement de réinitialisation du formulaire
+        form.addEventListener('reset', function(event) {
+            // Réinitialisez le champ username en supprimant le suffixe
+            document.getElementById('username').value = oldUsernameValue;
+        });
+
+        // Sauvegardez la valeur initiale du champ username
+        const oldUsernameValue = document.getElementById('username').value;
+    </script> --}}
+    
+</form>
 </x-guest-layout>
