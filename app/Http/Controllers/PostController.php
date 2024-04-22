@@ -15,10 +15,16 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
     public function show($slug)
-{
-    $post = Post::where('slug', $slug)->firstOrFail();
-    return view('posts.show', compact('post'));
-}
+    {
+        $post = Post::where('slug', $slug)->firstOrFail();
+        return view('posts.show', compact('post'));
+    }
+    public function showGuest($slug)
+    {
+        $post = Post::where('slug', $slug)->firstOrFail();
+        return view('posts.show-guest', compact('post'));
+    }
+
 
     public function create()
     {

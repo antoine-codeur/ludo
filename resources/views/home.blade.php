@@ -11,7 +11,6 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
     <!-- Styles -->
-    <link href="{{ asset('css/index.css') }}" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         header {
@@ -62,7 +61,7 @@
                     <div class="p-4">
                         <h3 class="text-xl font-bold mb-2">{{ $post->title }}</h3>
                         <p class="text-gray-700">{{ $post->excerpt }}</p>
-                        <a href="{{ route('posts.show', $post) }}" class="mt-2 block text-blue-500 hover:underline">Lire la suite</a>
+                        <a href="{{ route('posts.show-guest', $post) }}" class="mt-2 block text-blue-500 hover:underline">Lire la suite</a>
                     </div>
                 </div>
             @empty
